@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kuis MPLS - Kecakapan Digital</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #eef; padding: 20px; text-align: center; }
+    .container { max-width: 720px; margin: auto; text-align: left; }
+    .question, .info {
+      background: #fff; padding: 15px; margin-bottom: 15px;
+      border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    #result {
+      background: #dff0d8; padding: 15px; display: none;
+      border-left: 5px solid green; margin-top: 20px;
+    }
+    table {
+      width: 100%; border-collapse: collapse; margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    img.logo {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <img src="logo.png" alt="Logo Sekolah" class="logo">
+  <h1>Kuis MPLS: Kecakapan Teknologi & Digital</h1>
+
+  <div class="info">
+    <label>Nama Lengkap:<br><input type="text" id="nama" style="width:100%"></label><br><br>
+    <label>Asal Sekolah:<br><input type="text" id="sekolah" style="width:100%"></label>
+  </div>
+
+  <form id="quizForm">
+    <div class="question">
+      <p>1. Apa yang sebaiknya kamu lakukan saat menerima link mencurigakan?</p>
+      <input type="radio" name="q1" value="A"> Klik saja<br>
+      <input type="radio" name="q1" value="B"> Hapus dan laporkan<br>
+      <input type="radio" name="q1" value="C"> Kirim ke teman<br>
+      <input type="radio" name="q1" value="D"> Diamkan
+    </div>
+
+    <div class="question">
+      <p>2. Contoh penggunaan teknologi digital yang produktif adalah...</p>
+      <input type="radio" name="q2" value="A"> Main game<br>
+      <input type="radio" name="q2" value="B"> Scroll medsos<br>
+      <input type="radio" name="q2" value="C"> Belajar dari YouTube<br>
+      <input type="radio" name="q2" value="D"> Buat akun palsu
+    </div>
+
+    <div class="question">
+      <p>3. Aplikasi presentasi adalah...</p>
+      <input type="radio" name="q3" value="A"> Google Chrome<br>
+      <input type="radio" name="q3" value="B"> PowerPoint<br>
+      <input type="radio" name="q3" value="C"> WhatsApp<br>
+      <input type="radio" name="q3" value="D"> TikTok
+    </div>
+
+    <div class="question">
+      <p>4. Password yang aman adalah...</p>
+      <input type="radio" name="q4" value="A"> 123456<br>
+      <input type="radio" name="q4" value="B"> Nama pacar<br>
+      <input type="radio" name="q4" value="C"> Tanggal lahir<br>
+      <input type="radio" name="q4" value="D"> Kombinasi karakter
+    </div>
+
+    <div class="question">
+      <p>5. Apa itu jejak digital?</p>
+      <input type="radio" name="q5" value="A"> Langkah kaki<br>
+      <input type="radio" name="q5" value="B"> Foto nyata<br>
+      <input type="radio" name="q5" value="C"> Aktivitas di internet<br>
+      <input type="radio" name="q5" value="D"> Aplikasi GPS
+    </div>
+
+    <button type="button" onclick="submitKuis()">Kirim Jawaban</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  const correctAnswers = {q1:"B", q2:"C", q3:"B", q4:"D", q5:"C"};
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxxxxxxxx/exec'; // Ganti dengan URL Web App kamu
+
+  function submitKuis() {
+    const nama = document.getElementById("nama").value.trim();
+    const sekolah = document.getElementById("sekolah").value.trim();
+    if (!nama || !sekolah) {
+      alert("Isi Nama dan Sekolah terlebih dahulu.");
+      return;
+    }
+
+    const jawaban = {};
+    let skor = 0;
+
+    for (let key in correctAnswers) {
+      const selected = document.querySelector(`input[name="${key}"]:checked`);
+      jawaban[key] = selected ? selected.value : "-";
+      if (selected && selected.value === correctAnswers[key]) skor++;
+    }
+
+    fetch(scriptURL, {
+      method: 'POST',
+      body: JSON.stringify({nama, sekolah, skor, jawaban})
+    });
+
+    let html = `<h3>Terima kasih, ${nama} dari ${sekolah}</h3>
+    <p>Skor kamu: <strong>${skor} / 5</strong></p>
+    <table>
+      <tr><th>No</th><th>Jawaban Kamu</th><th>Jawaban Benar</th><th>Status</th></tr>`;
+
+    let no = 1;
+    for (let key in correctAnswers) {
+      const benar = correctAnswers[key];
+      const user = jawaban[key];
+      const status = user === benar ? "✅ Benar" : "❌ Salah";
+      html += `<tr>
+        <td>${no}</td>
+        <td>${user}</td>
+        <td>${benar}</td>
+        <td>${status}</td>
+      </tr>`;
+      no++;
+    }
+
+    html += "</table>";
+    document.getElementById("result").style.display = "block";
+    document.getElementById("result").innerHTML = html;
+    document.getElementById("quizForm").reset();
+  }
+</script>
+
+</body>
+</html>
