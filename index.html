@@ -2,177 +2,135 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kuis MPLS - Kecakapan Digital</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f3f7f9;
-      color: #333;
+      background: linear-gradient(135deg, #3f51b5, #9c27b0);
+      color: #fff;
+      min-height: 100vh;
     }
     .container {
-      max-width: 800px;
+      max-width: 600px;
       margin: auto;
-      padding: 20px;
-    }
-    .header {
-      text-align: center;
-      padding-bottom: 20px;
-    }
-    .logo {
-      width: 80px;
-      margin-bottom: 10px;
-    }
-    h1 {
-      margin: 0;
-      font-size: 24px;
+      padding: 30px 20px;
     }
     .card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
       padding: 20px;
       margin-bottom: 20px;
     }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      margin-top: 5px;
-    }
-    label {
-      display: block;
-      margin-bottom: 10px;
-    }
-    .question p {
-      font-weight: bold;
-    }
-    .question input {
-      margin-right: 8px;
-    }
     button {
-      background: #0066cc;
-      color: white;
-      padding: 12px 20px;
+      background: #673ab7;
+      color: #fff;
       border: none;
-      border-radius: 6px;
+      padding: 12px 18px;
       font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
       width: 100%;
-      margin-top: 15px;
-      transition: background 0.3s;
+      transition: 0.3s;
     }
-    button:hover {
-      background: #004b99;
-    }
-    #result {
-      display: none;
-      background: #e0f8e9;
-      border-left: 5px solid #28a745;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 10px;
-    }
+    button:hover { background: #512da8; }
+    .step { display: none; }
+    .step.active { display: block; }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      background: #fff;
+      color: #000;
     }
     th, td {
       border: 1px solid #ccc;
       padding: 8px;
       text-align: center;
     }
-    th {
-      background-color: #f9f9f9;
-    }
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 20px;
-      }
-      button {
-        font-size: 14px;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <img src="logo.png" alt="Logo Sekolah" class="logo" />
-      <h1>Kuis MPLS: Kecakapan Teknologi & Digital</h1>
-    </div>
-
-    <div class="card">
-      <label>Nama Lengkap:
-        <input type="text" id="nama" placeholder="Contoh: Ahmad Rudi">
-      </label>
-      <label>Asal Sekolah:
-        <input type="text" id="sekolah" placeholder="Contoh: SMPN 1 Ciamis">
-      </label>
-    </div>
-
     <form id="quizForm">
-      <div class="card question">
-        <p>1. Apa yang sebaiknya kamu lakukan saat menerima link mencurigakan?</p>
-        <label><input type="radio" name="q1" value="A"> Klik saja</label>
-        <label><input type="radio" name="q1" value="B"> Hapus dan laporkan</label>
-        <label><input type="radio" name="q1" value="C"> Kirim ke teman</label>
-        <label><input type="radio" name="q1" value="D"> Diamkan</label>
+      <div class="card step active" id="step1">
+        <h3>Data Diri</h3>
+        <label>Nama Lengkap:
+          <input type="text" id="nama" required>
+        </label><br>
+        <label>Asal Sekolah:
+          <input type="text" id="sekolah" required>
+        </label><br><br>
+        <button type="button" onclick="nextStep(2)">Mulai Kuis</button>
       </div>
 
-      <div class="card question">
-        <p>2. Contoh penggunaan teknologi digital yang produktif adalah...</p>
-        <label><input type="radio" name="q2" value="A"> Main game</label>
-        <label><input type="radio" name="q2" value="B"> Scroll medsos</label>
-        <label><input type="radio" name="q2" value="C"> Belajar dari YouTube</label>
-        <label><input type="radio" name="q2" value="D"> Buat akun palsu</label>
+      <div class="card step" id="step2">
+        <p><strong>1. Apa yang sebaiknya kamu lakukan saat menerima link mencurigakan?</strong></p>
+        <label><input type="radio" name="q1" value="A"> Klik saja</label><br>
+        <label><input type="radio" name="q1" value="B"> Hapus dan laporkan</label><br>
+        <label><input type="radio" name="q1" value="C"> Kirim ke teman</label><br>
+        <label><input type="radio" name="q1" value="D"> Diamkan</label><br><br>
+        <button type="button" onclick="nextStep(3)">Berikutnya</button>
       </div>
 
-      <div class="card question">
-        <p>3. Aplikasi presentasi adalah...</p>
-        <label><input type="radio" name="q3" value="A"> Google Chrome</label>
-        <label><input type="radio" name="q3" value="B"> PowerPoint</label>
-        <label><input type="radio" name="q3" value="C"> WhatsApp</label>
-        <label><input type="radio" name="q3" value="D"> TikTok</label>
+      <div class="card step" id="step3">
+        <p><strong>2. Contoh penggunaan teknologi digital yang produktif adalah...</strong></p>
+        <label><input type="radio" name="q2" value="A"> Main game</label><br>
+        <label><input type="radio" name="q2" value="B"> Scroll medsos</label><br>
+        <label><input type="radio" name="q2" value="C"> Belajar dari YouTube</label><br>
+        <label><input type="radio" name="q2" value="D"> Buat akun palsu</label><br><br>
+        <button type="button" onclick="nextStep(4)">Berikutnya</button>
       </div>
 
-      <div class="card question">
-        <p>4. Password yang aman adalah...</p>
-        <label><input type="radio" name="q4" value="A"> 123456</label>
-        <label><input type="radio" name="q4" value="B"> Nama pacar</label>
-        <label><input type="radio" name="q4" value="C"> Tanggal lahir</label>
-        <label><input type="radio" name="q4" value="D"> Kombinasi karakter</label>
+      <div class="card step" id="step4">
+        <p><strong>3. Aplikasi presentasi adalah...</strong></p>
+        <label><input type="radio" name="q3" value="A"> Google Chrome</label><br>
+        <label><input type="radio" name="q3" value="B"> PowerPoint</label><br>
+        <label><input type="radio" name="q3" value="C"> WhatsApp</label><br>
+        <label><input type="radio" name="q3" value="D"> TikTok</label><br><br>
+        <button type="button" onclick="nextStep(5)">Berikutnya</button>
       </div>
 
-      <div class="card question">
-        <p>5. Apa itu jejak digital?</p>
-        <label><input type="radio" name="q5" value="A"> Langkah kaki</label>
-        <label><input type="radio" name="q5" value="B"> Foto nyata</label>
-        <label><input type="radio" name="q5" value="C"> Aktivitas di internet</label>
-        <label><input type="radio" name="q5" value="D"> Aplikasi GPS</label>
+      <div class="card step" id="step5">
+        <p><strong>4. Password yang aman adalah...</strong></p>
+        <label><input type="radio" name="q4" value="A"> 123456</label><br>
+        <label><input type="radio" name="q4" value="B"> Nama pacar</label><br>
+        <label><input type="radio" name="q4" value="C"> Tanggal lahir</label><br>
+        <label><input type="radio" name="q4" value="D"> Kombinasi karakter</label><br><br>
+        <button type="button" onclick="nextStep(6)">Berikutnya</button>
       </div>
 
-      <button type="button" onclick="submitKuis()">Kirim Jawaban</button>
+      <div class="card step" id="step6">
+        <p><strong>5. Apa itu jejak digital?</strong></p>
+        <label><input type="radio" name="q5" value="A"> Langkah kaki</label><br>
+        <label><input type="radio" name="q5" value="B"> Foto nyata</label><br>
+        <label><input type="radio" name="q5" value="C"> Aktivitas di internet</label><br>
+        <label><input type="radio" name="q5" value="D"> Aplikasi GPS</label><br><br>
+        <button type="button" onclick="submitKuis()">Kirim Jawaban</button>
+      </div>
     </form>
 
     <div id="result"></div>
   </div>
 
   <script>
-    const correctAnswers = {q1:"B", q2:"C", q3:"B", q4:"D", q5:"C"};
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyLuHZiR8sp5XHklE2RMz4LTtYUi-2zDW6QktEMzM0wAbO33ZXQUrYxaUuskYrSdQeE/exec'; // GANTI DENGAN URL MU
+    const correctAnswers = { q1: "B", q2: "C", q3: "B", q4: "D", q5: "C" };
+    const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_URL/exec';
+
+    function nextStep(n) {
+      document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+      document.getElementById('step' + n).classList.add('active');
+    }
 
     function submitKuis() {
       const nama = document.getElementById("nama").value.trim();
       const sekolah = document.getElementById("sekolah").value.trim();
       if (!nama || !sekolah) {
-        alert("Isi Nama dan Sekolah terlebih dahulu.");
+        alert("Isi nama dan asal sekolah terlebih dahulu.");
+        nextStep(1);
         return;
       }
 
@@ -184,23 +142,20 @@
         if (selected && selected.value === correctAnswers[key]) skor++;
       }
 
-      // Kirim ke Google Sheets
       fetch(scriptURL, {
         method: 'POST',
-        body: JSON.stringify({nama, sekolah, skor, jawaban})
+        body: JSON.stringify({ nama, sekolah, skor, jawaban })
       });
 
-      // Tampilkan hasil
-      let html = `<h3>Terima kasih, ${nama} dari ${sekolah}</h3>
+      let html = `<div class="card"><h3>Terima kasih, ${nama} dari ${sekolah}!</h3>
       <p><strong>Skor kamu: ${skor}/5</strong></p>
-      <table>
-        <tr><th>No</th><th>Jawaban Kamu</th><th>Jawaban Benar</th><th>Status</th></tr>`;
+      <table><tr><th>No</th><th>Jawaban Kamu</th><th>Kunci</th><th>Status</th></tr>`;
 
       let no = 1;
       for (let key in correctAnswers) {
         const benar = correctAnswers[key];
         const user = jawaban[key];
-        const status = user === benar ? "✅ Benar" : "❌ Salah";
+        const status = user === benar ? "✅" : "❌";
         html += `<tr>
           <td>${no}</td>
           <td>${user}</td>
@@ -209,11 +164,8 @@
         </tr>`;
         no++;
       }
-
-      html += "</table>";
-      document.getElementById("result").style.display = "block";
-      document.getElementById("result").innerHTML = html;
-      document.getElementById("quizForm").reset();
+      html += "</table></div>";
+      document.querySelector("#quizForm").innerHTML = html;
     }
   </script>
 </body>
